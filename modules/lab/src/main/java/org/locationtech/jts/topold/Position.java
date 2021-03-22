@@ -1,4 +1,4 @@
-package org.locationtech.jts.topology;
+package org.locationtech.jts.topold;
 
 /**
  * A code denoting a position relative to an edge in a {@link Topology}.

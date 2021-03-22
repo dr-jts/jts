@@ -1,4 +1,4 @@
-package org.locationtech.jts.topology;
+package org.locationtech.jts.topold;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -6,6 +6,9 @@ import java.util.Iterator;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTReader;
+import org.locationtech.jts.topold.Topology;
+import org.locationtech.jts.topold.TopologyBuilder;
+import org.locationtech.jts.topold.TopologyFace;
 
 import junit.textui.TestRunner;
 import test.jts.GeometryTestCase;
@@ -19,6 +22,7 @@ public class TopologyBuilderTest extends GeometryTestCase {
   {
     TestRunner.run(TopologyBuilderTest.class);
   }
+  
   private GeometryFactory geomFact = new GeometryFactory();
   private WKTReader reader = new WKTReader();
   private TopologyBuilder topoBuilder;

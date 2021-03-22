@@ -1,4 +1,4 @@
-package org.locationtech.jts.topology;
+package org.locationtech.jts.topold;
 
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.planargraph.Edge;

@@ -1,4 +1,4 @@
-package org.locationtech.jts.topology;
+package org.locationtech.jts.topold;
 
 import java.util.Collection;
 import java.util.HashSet;
