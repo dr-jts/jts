@@ -222,19 +222,6 @@ public class TopologyEdgeRing {
     }
     return false;
   }
-
-  /**
-   * Test whether the parent edge of a TopologyHalfEdge
-   * lies on the outer boundary of its EdgeRing.
-   * (Dangling or Cut edges have the same EdgeRing on both sides).
-   *
-   * @param de the TopologyHalfEdge to test
-   * @return <code>true</code> if the parent edge lies on the boundary of the ring
-   */
-  private static boolean isOuter(TopologyHalfEdge e)
-  {
-    return e.getEdgeRing() != e.symTE().getEdgeRing();
-  }
   
   /**
    * Computes the minimal LinearRings formed by this edgering.
@@ -254,10 +241,10 @@ public class TopologyEdgeRing {
     Set<TopologyHalfEdge> edgesUsed = new HashSet<TopologyHalfEdge>();
 
     for (Iterator<TopologyHalfEdge> i = iterator(); i.hasNext(); ) {
-      TopologyHalfEdge de = i.next();
-      if (! edgesUsed.contains(de)) {
-        if (isOuter(de)) {
-          LinearRing ring = PolygonRingBuilder.getRing(de, edgesUsed, geomFact);
+      TopologyHalfEdge e = i.next();
+      if (! edgesUsed.contains(e)) {
+        if (e.isOuter()) {
+          LinearRing ring = PolygonRingBuilder.getRing(e, edgesUsed, geomFact);
           if (ring != null)
             rings.add(ring);
         }

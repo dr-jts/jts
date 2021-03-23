@@ -44,6 +44,19 @@ public class TopologyHalfEdge extends HalfEdge {
   }
   
   /**
+   * Tests whether the parent edge of a TopologyHalfEdge
+   * lies on the outer boundary of its EdgeRing.
+   * (Dangling or Cut edges have the same EdgeRing on both sides).
+   *
+   * @param de the TopologyHalfEdge to test
+   * @return <code>true</code> if the parent edge lies on the boundary of the ring
+   */
+  public boolean isOuter()
+  {
+    return getEdgeRing() != symTE().getEdgeRing();
+  }
+  
+  /**
    * Sets the {@link TopologyEdgeRing} that this directed edge is
    * a member of.
    *
