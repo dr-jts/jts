@@ -54,9 +54,11 @@ public class TopologyEdgeRing {
    */
   boolean isRemoved() { return heList == null; }
 
+  // only until minimal rings can be built
   public LinearRing getRingTEMP() {
     return getRing();
   }
+  
   /**
    * Returns this ring as a {@link LinearRing}, or null if an Exception occurs while
    * creating it (such as a topology problem). Details of problems are written to
@@ -108,21 +110,19 @@ public class TopologyEdgeRing {
 
   public TopologyFace getFace() { return face; }
   
-  public void build(TopologyHalfEdge startDE) {
+  public void build(TopologyHalfEdge start) {
     heList = new ArrayList<TopologyHalfEdge>();
     ringPts = null;
     ring = null;
-    TopologyHalfEdge de = startDE;
+    TopologyHalfEdge e = start;
     do {
-      heList.add(de);
-      de.setEdgeRing(this);
-      //de = de.getNext();
-      de = (TopologyHalfEdge) de.next();
+      heList.add(e);
+      e.setEdgeRing(this);
+      e = e.nextTE();
       //Assert.isTrue(de != null, "found null DE in ring");
-      if (de != startDE && de.isInEdgeRing())
+      if (e != start && e.isInEdgeRing())
           throw new TopologyException("found directed edge already assigned to ring");
-      //Assert.isTrue(de == startDE || ! de.isInEdgeRing(), "found DE already in ring");
-    } while (de != startDE);
+    } while (e != start);
   }
 
   public String toString() {
@@ -224,21 +224,20 @@ public class TopologyEdgeRing {
   }
 
   /**
-   * Test whether the parent edge of a DirectedEdge
-   * lies on the outer boundary of an EdgeRing.
-   * (Dangling or Cut edges will have the same EdgeRing on both sides).
+   * Test whether the parent edge of a TopologyHalfEdge
+   * lies on the outer boundary of its EdgeRing.
+   * (Dangling or Cut edges have the same EdgeRing on both sides).
    *
-   * @param de the DirectedEdge to test
+   * @param de the TopologyHalfEdge to test
    * @return <code>true</code> if the parent edge lies on the boundary of the ring
    */
-  public static boolean isExternal(TopologyHalfEdge de)
+  private static boolean isOuter(TopologyHalfEdge e)
   {
-    boolean isExternal = de.getEdgeRing() != de.symTE().getEdgeRing();
-    return isExternal;
+    return e.getEdgeRing() != e.symTE().getEdgeRing();
   }
   
   /**
-   * Computes the minimal LinearRingss forming this edgering.
+   * Computes the minimal LinearRings formed by this edgering.
    * The set of rings returned will be either a shell and some holes
    * (if this ring is the shell of a {@link TopologyFace} -
    * a shell will generate hole rings if it is self-intersecting),
@@ -255,11 +254,10 @@ public class TopologyEdgeRing {
     Set<TopologyHalfEdge> edgesUsed = new HashSet<TopologyHalfEdge>();
 
     for (Iterator<TopologyHalfEdge> i = iterator(); i.hasNext(); ) {
-      TopologyHalfEdge de = (TopologyHalfEdge) i.next();
+      TopologyHalfEdge de = i.next();
       if (! edgesUsed.contains(de)) {
-        if (isExternal(de)) {
-          PolygonRingBuilder polyRing = new PolygonRingBuilder(de);
-          LinearRing ring = polyRing.getRing(edgesUsed, geomFact);
+        if (isOuter(de)) {
+          LinearRing ring = PolygonRingBuilder.getRing(de, edgesUsed, geomFact);
           if (ring != null)
             rings.add(ring);
         }

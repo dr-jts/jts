@@ -15,16 +15,25 @@ import org.locationtech.jts.geom.Polygon;
  */
 public class PolygonRingBuilder
 {
+  public static LinearRing getRing(TopologyHalfEdge de, Set<TopologyHalfEdge> edgesUsed, GeometryFactory geomFact) {
+    PolygonRingBuilder polyRing = new PolygonRingBuilder(de, edgesUsed);
+    LinearRing ring = polyRing.getRing( geomFact);
+    return ring;
+  }
+  
   private TopologyHalfEdge startDE;
+  private Set<TopologyHalfEdge> edgesUsed;
 
   /**
    * Creates a builder for the ring containing the given
    * {@link TopologyDirectedEdge}
    *
    * @param startDE a dir edge in the desired ring
+   * @param edgesUsed 
    */
-  public PolygonRingBuilder(TopologyHalfEdge startDE) {
+  public PolygonRingBuilder(TopologyHalfEdge startDE, Set<TopologyHalfEdge> edgesUsed) {
     this.startDE = startDE;
+    this.edgesUsed = edgesUsed;
   }
 
   /**
@@ -36,22 +45,22 @@ public class PolygonRingBuilder
    * @param geomFact
    * @return a linear ring, or <code>null</code> if not possible to build a valid ring
    */
-  public LinearRing getRing(Set<TopologyHalfEdge> edgesUsed, GeometryFactory geomFact)
+  public LinearRing getRing( GeometryFactory geomFact)
   {
     // for now
     TopologyEdgeRing er = startDE.getEdgeRing();
+    // mark all edges in ring as used
     for (Iterator<TopologyHalfEdge> i = er.iterator(); i.hasNext();) {
       edgesUsed.add(i.next());
     }
     return er.getRingTEMP();
     /*
-    Coordinate[] ringPts = build(edgesUsed);
+    Coordinate[] ringPts = build();
     return geomFact.createLinearRing(ringPts);
     */
   }
 
-  /*
-  private Coordinate[] build(Set edgesUsed)
+  private Coordinate[] buildRing()
   {
     CoordinateList coordList = new CoordinateList();
     TopologyEdgeRing edgeRing = startDE.getEdgeRing();
@@ -63,18 +72,13 @@ public class PolygonRingBuilder
      } while (currDE != startDE);
     return coordList.toCoordinateArray();
   }
-  */
 
-  /*
-  private static TopologyHalfEdge getNextInMinimalRing(TopologyHalfEdge de,
-      TopologyEdgeRing edgeRing)
-  {
-    Node node = de.getToNode();
-    DirectedEdgeStar deStar = node.getOutEdges();
-    return getNextInMinimalRing(deStar, (TopologyDirectedEdge) de.getSym(), edgeRing);
+  private TopologyHalfEdge getNextInMinimalRing(TopologyHalfEdge currDE, TopologyEdgeRing edgeRing) {
+    return null;
   }
 
-  private static TopologyHalfEdge getNextInMinimalRing(DirectedEdgeStar deStar,
+  /*
+  private static TopologyHalfEdge getNextInMinimalRing(
       TopologyHalfEdge de, final TopologyEdgeRing edgeRing)
   {
     return (TopologyDirectedEdge) DirectedEdgeStarEx.nextEdge(deStar, de, DirectedEdgeStarEx.CLOCKWISE,

@@ -9,7 +9,7 @@ public class TopologyEdge {
   public static TopologyEdge create(CoordinateSequence pts) {
     TopologyEdge edge = new TopologyEdge(pts);
     TopologyHalfEdge he0 = createEdgePair(edge);
-    edge.setHalfEdges(he0);
+    edge.setHalfEdge(he0);
     return edge;
   }
   
@@ -38,20 +38,14 @@ public class TopologyEdge {
     return new TopologyHalfEdge(origin, dirPt, direction, edge);
   }
 
-
-
   private TopologyHalfEdge hedge;
   private CoordinateSequence seq;
 
-  public TopologyEdge(CoordinateSequence pts) {
+  private TopologyEdge(CoordinateSequence pts) {
     this.seq = pts;
   }
 
-  public CoordinateSequence getCoordinateSequence() {
-    return seq;
-  }
-  
-  public void setHalfEdges(TopologyHalfEdge e) {
+  private void setHalfEdge(TopologyHalfEdge e) {
     hedge = e;
   }
 
@@ -59,6 +53,10 @@ public class TopologyEdge {
     return hedge;
   }
 
+  public CoordinateSequence getCoordinateSequence() {
+    return seq;
+  }
+  
   public int size() {
     return seq.size();
   }
