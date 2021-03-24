@@ -67,6 +67,27 @@ public class TopologyBuilderTest extends GeometryTestCase {
     checkTopology(wkt, expected);
   }
 
+  public void testTriangleWithCutEdge() throws Exception {
+    String[] wkt = {
+        "LINESTRING (0 0, 0 100, 100 0, 0 0)",   //shell
+        "LINESTRING (0 0, 10 10)",   // cut edge
+        "LINESTRING (10 10, 10 20, 20 10, 10 10)"  // hole
+          };
+    checkTopology(wkt);
+  }
+
+  public void testFigure8WithDangle() throws Exception {
+    String[] wkt = {
+        "LINESTRING (0 0 , 10 10)",   // isolated edge
+        "LINESTRING (185 221, 100 100)",   //dangling edge
+        "LINESTRING (185 221, 88 275, 180 316)",
+        "LINESTRING (185 221, 292 281, 180 316)",
+        "LINESTRING (189 98, 83 187, 185 221)",
+        "LINESTRING (189 98, 325 168, 185 221)"
+          };
+    checkTopology(wkt);
+  }
+  
   void checkTopology(String[] wkts) {
     checkTopology(wkts, null);
   }
