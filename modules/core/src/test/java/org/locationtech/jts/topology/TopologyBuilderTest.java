@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
 
 
@@ -95,7 +96,7 @@ public class TopologyBuilderTest extends GeometryTestCase {
   void checkTopology(String[] wkts, String[] wktExpected)
   {
     topoBuilder = new TopologyBuilder();
-    topoBuilder.addEdgesFromLineStrings(readList(wkts));
+    topoBuilder.addEdges((List<LineString>) readList(wkts));
 
     Topology cov = topoBuilder.getTopology();
     Collection<TopologyFace> faces = cov.getFaces();

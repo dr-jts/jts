@@ -26,7 +26,7 @@ public class TopologyBuilder {
     return topology.addEdge(pts);
   }
 
-  public void addEdgesFromLineStrings(List<LineString> lines) {
+  public void addEdges(List<LineString> lines) {
     for (LineString line : lines) {
       addEdge(line.getCoordinateSequence());
     }
@@ -129,10 +129,10 @@ public class TopologyBuilder {
     return edgeRingList;
   }
 
-  private static void computeEdgeRing(TopologyHalfEdge de, List<TopologyEdgeRing> edgeRingList) {
+  private static void computeEdgeRing(TopologyHalfEdge edge, List<TopologyEdgeRing> edgeRingList) {
     // if DE is already in ring skip it
-    if (de.isInEdgeRing()) return;
-    TopologyEdgeRing edgeRing = TopologyEdgeRing.create(de);
+    if (edge.isInEdgeRing()) return;
+    TopologyEdgeRing edgeRing = TopologyEdgeRing.create(edge);
     edgeRingList.add(edgeRing);
   }
 
