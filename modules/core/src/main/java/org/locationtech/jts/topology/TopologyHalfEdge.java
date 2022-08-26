@@ -1,3 +1,14 @@
+/*
+ * Copyright (c) 2022 Martin Davis
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v20.html
+ * and the Eclipse Distribution License is available at
+ *
+ * http://www.eclipse.org/org/documents/edl-v10.php.
+ */
 package org.locationtech.jts.topology;
 
 import org.locationtech.jts.edgegraph.HalfEdge;
@@ -20,7 +31,7 @@ public class TopologyHalfEdge extends HalfEdge {
     this.edge = edge;
   }
 
-  public TopologyHalfEdge symTE() {
+  TopologyHalfEdge symTE() {
     return (TopologyHalfEdge) sym();
   }
 
@@ -32,7 +43,7 @@ public class TopologyHalfEdge extends HalfEdge {
    * 
    * @return the next outgoing edge CCW around the destination vertex
    */
-  public TopologyHalfEdge nextTE() {
+  TopologyHalfEdge nextTE() {
     return (TopologyHalfEdge) next();
   }
   
@@ -62,7 +73,7 @@ public class TopologyHalfEdge extends HalfEdge {
    *
    * @param edgeRing the edge ring containing this dir edge
    */
-  public void setEdgeRing(TopologyEdgeRing edgeRing)
+  void setEdgeRing(TopologyEdgeRing edgeRing)
   {
       this.edgeRing = edgeRing;
   }
@@ -73,7 +84,7 @@ public class TopologyHalfEdge extends HalfEdge {
    * @return <code>true</code> if this dir edge is part of an edge ring
    * @see #setRing(EdgeRing)
    */
-  public TopologyEdgeRing getEdgeRing() { return edgeRing; }
+  TopologyEdgeRing getEdgeRing() { return edgeRing; }
 
   public boolean isInEdgeRing() {
     return edgeRing != null && ! edgeRing.isRemoved();
