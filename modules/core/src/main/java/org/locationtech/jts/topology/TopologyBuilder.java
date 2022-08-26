@@ -119,7 +119,7 @@ public class TopologyBuilder {
    */
   static List<TopologyEdgeRing> computeEdgeRings(Iterator<TopologyEdge> edgeIt)
   {
-    // build all edgerings reachable from the input dirEdges
+    // build all edgerings reachable from the input edges
     List<TopologyEdgeRing> edgeRingList = new ArrayList<TopologyEdgeRing>();
     while (edgeIt.hasNext()) {
       TopologyEdge e = (TopologyEdge) edgeIt.next();
@@ -130,7 +130,7 @@ public class TopologyBuilder {
   }
 
   private static void computeEdgeRing(TopologyHalfEdge edge, List<TopologyEdgeRing> edgeRingList) {
-    // if DE is already in ring skip it
+    // if edge is already in ring skip it
     if (edge.isInEdgeRing()) return;
     TopologyEdgeRing edgeRing = TopologyEdgeRing.create(edge);
     edgeRingList.add(edgeRing);
